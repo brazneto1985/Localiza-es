@@ -1,35 +1,95 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador de Localizações</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Buscar Endereço</title>
+    <style>
+        /* Estilos gerais e de layout */
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-image: url("{{ url_for('static', filename='background.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0; 
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 50px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+        h2 { color: #333; }
+        form { margin-top: 20px; }
+        input { 
+            width: 80%; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border: 1px solid #ccc; 
+            border-radius: 5px;
+        }
+        button { 
+            padding: 10px 20px; 
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer;
+        }
+        button:hover { background-color: #0056b3; }
+        .alert { 
+            padding: 10px; 
+            margin: 10px auto; 
+            width: 80%; 
+            border-radius: 5px; 
+        }
+        .success { 
+            color: #155724; 
+            background-color: #d4edda; 
+            border: 1px solid #c3e6cb;
+        }
+        .error { 
+            color: #721c24; 
+            background-color: #f8d7da; 
+            border: 1px solid #f5c6cb;
+        }
+    </style>
 </head>
 <body>
-    <h1>Buscador de Localizações</h1>
-    
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <ul>
-          {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-    
-    <form action="{{ url_for('buscar') }}" method="post">
-        <label for="entrada">Insira a Instalação ou Medidor:</label>
-        <input type="text" id="entrada" name="entrada" required>
-        <button type="submit">Buscar</button>
-    </form>
-
-    {% if mapa_url %}
-        <h2>Resultado da Busca</h2>
-        <p>Localização encontrada! Clique no link para abrir o Google Maps:</p>
-        <a href="{{ mapa_url }}" target="_blank">Abrir no Google Maps</a>
-    {% endif %}
+    <div class="container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo da Empresa" class="logo">
+        
+        <h2>Digite a instalação ou o número do medidor:</h2>
+        <form action="{{ url_for('buscar') }}" method="post">
+            <label for="entrada" hidden>Instalação ou Medidor</label>
+            <input type="text" id="entrada" name="entrada" required placeholder="Instalação ou Medidor">
+            <button type="submit">Buscar</button>
+        </form>
+        
+        <!-- Exibição de Mensagens Flash -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message|safe }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Link do Google Maps, se houver -->
+        {% if mapa_url %}
+            <p>Localização encontrada: <a href="{{ mapa_url }}" target="_blank">Ver no Google Maps</a></p>
+        {% endif %}
+    </div>
 </body>
 </html>
 
