@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        /* Estilos gerais para o fundo e fonte */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("{{ url_for('static', filename='background.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+        
+        /* Container do login */
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+            width: 300px;
+            text-align: center;
+        }
+
+        .login-container img.logo {
+            width: 120px;
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .alert {
+            padding: 10px;
+            margin: 10px auto;
+            border-radius: 5px;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        .error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+
+        .footer-text {
+            margin-top: 20px;
+            font-size: 0.85em;
+            color: #555;
+        }
+
+        /* Responsividade para telas menores */
+        @media (max-width: 768px) {
+            .login-container {
+                width: 80%;
+                padding: 20px;
+            }
+
+            .login-container img.logo {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo da Empresa" class="logo">
+        
+        <h2>Acesso ao Sistema</h2>
+        
+        <!-- Formulário de Login -->
+        <form action="{{ url_for('login') }}" method="post">
+            <label for="username" hidden>Usuário</label>
+            <input type="text" id="username" name="username" required placeholder="Usuário" aria-label="Usuário">
+            
+            <label for="password" hidden>Senha</label>
+            <input type="password" id="password" name="password" required placeholder="Senha" aria-label="Senha">
+            
+            <button type="submit">Entrar</button>
+        </form>
+
+        <!-- Exibição de Mensagens Flash -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message|safe }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Exibição do Número da Versão -->
+        <p class="footer-text">Versão do Aplicativo: 1.0.2</p>
+    </div>
+</body>
+</html>

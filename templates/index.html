@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscar Endereço</title>
     <style>
-        /* Estilos gerais e de layout */
         body { 
             font-family: Arial, sans-serif; 
             text-align: center; 
-            background-image: url("{{ url_for('static', filename='background.jpg') }}");
+            background-image: url("{{ url_for('static', filename='background2.jpg') }}");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -24,27 +23,31 @@
             display: inline-block;
             margin-top: 50px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
         }
         .logo {
+            display: block;
+            margin: 0 auto 20px;
             width: 150px;
-            margin-bottom: 20px;
         }
-        h2 { color: #333; }
-        form { margin-top: 20px; }
+        h2 { color: #333; text-align: center; }
+        form { margin-top: 20px; text-align: center; }
         input { 
-            width: 80%; 
+            width: 50%; 
             padding: 10px; 
             margin: 10px 0; 
             border: 1px solid #ccc; 
             border-radius: 5px;
         }
         button { 
-            padding: 10px 20px; 
+            width: 20%; 
+            padding: 10px; 
             background-color: #007bff; 
             color: white; 
             border: none; 
             border-radius: 5px; 
             cursor: pointer;
+            margin-top: 10px;
         }
         button:hover { background-color: #0056b3; }
         .alert { 
@@ -52,6 +55,7 @@
             margin: 10px auto; 
             width: 80%; 
             border-radius: 5px; 
+            text-align: center;
         }
         .success { 
             color: #155724; 
@@ -63,16 +67,75 @@
             background-color: #f8d7da; 
             border: 1px solid #f5c6cb;
         }
+        .details-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        .details-table td {
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+        .details-table td.label {
+            font-weight: bold;
+            background-color: #f5f5f5;
+            width: 30%;
+        }
+        .app-version {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        /* Estilos do usuário e botão de logout no topo direito */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .username {
+            margin-right: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        .logout-button {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .logout-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Barra superior com o nome do usuário e botão de logout -->
+    {% if session.get('logged_in') %}
+        <div class="top-bar">
+            <span class="username">Usuário: {{ session.get('username') }}</span>
+            <form action="{{ url_for('logout') }}" method="get" style="display:inline;">
+                <button type="submit" class="logout-button">Sair</button>
+            </form>
+        </div>
+    {% endif %}
+
+    <div class="container" style="margin-top: 80px;">
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo da Empresa" class="logo">
         
         <h2>Digite a instalação ou o número do medidor:</h2>
         <form action="{{ url_for('buscar') }}" method="post">
             <label for="entrada" hidden>Instalação ou Medidor</label>
             <input type="text" id="entrada" name="entrada" required placeholder="Instalação ou Medidor">
+            <!-- Botão de buscar abaixo da caixa de entrada -->
             <button type="submit">Buscar</button>
         </form>
         
@@ -85,10 +148,34 @@
             {% endif %}
         {% endwith %}
         
-        <!-- Link do Google Maps, se houver -->
-        {% if mapa_url %}
-            <p>Localização encontrada: <a href="{{ mapa_url }}" target="_blank">Ver no Google Maps</a></p>
+        <!-- Exibição dos Detalhes da Instalação em uma Tabela -->
+        {% if resultado %}
+            <h3 style="text-align: center;">Medidor Encontrado</h3>
+            <table class="details-table">
+                <tr>
+                    <td class="label">Instalação</td>
+                    <td>{{ resultado.instalação }}</td>
+                </tr>
+                <tr>
+                    <td class="label">MRU</td>
+                    <td>{{ resultado.MRU }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Medidor</td>
+                    <td>{{ resultado.medidor }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Endereço</td>
+                    <td>{{ resultado.endereço }}</td>
+                </tr>
+            </table>
+            {% if mapa_url %}
+                <p style="text-align: center;">Localização: <a href="{{ mapa_url }}" target="_blank">Ver no Google Maps</a></p>
+            {% endif %}
         {% endif %}
+        
+        <!-- Exibição da Versão -->
+        <p class="app-version">Versão do Aplicativo: {{ versao }}</p>
     </div>
 </body>
 </html>
