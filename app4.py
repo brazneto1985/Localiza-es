@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 # Use uma chave de ambiente
 app.secret_key = os.getenv('SECRET_KEY', 'default_secret')
-app.config['VERSION'] = "1.0.2"  # Versão do aplicativo
+app.config['VERSION'] = "1.0.3"  # Versão do aplicativo
 
 # Usuários de exemplo para login (pode ser extraído de uma fonte segura)
 users = {"leitura": os.getenv(
