@@ -86,6 +86,26 @@
             margin-top: 15px;
             font-weight: bold;
         }
+        .references-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        .references-table th, .references-table td {
+            padding: 8px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .references-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+        .references-table .highlight {
+            background-color: #d4edfa; /* Azul claro */
+            font-weight: bold;
+            text-decoration: underline;
+            text-decoration-color: #007bff; /* Azul */
+        }
         /* Estilos do usuário e botão de logout no topo direito */
         .top-bar {
             display: flex;
@@ -107,10 +127,10 @@
         .logout-button {
             background-color: #007bff;
             color: white;
-            padding: 8px 16px;
+            padding: 8px 32px;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
+            cursor: pointer;            
         }
         .logout-button:hover {
             background-color: #0056b3;
@@ -135,7 +155,6 @@
         <form action="{{ url_for('buscar') }}" method="post">
             <label for="entrada" hidden>Instalação ou Medidor</label>
             <input type="text" id="entrada" name="entrada" required placeholder="Instalação ou Medidor">
-            <!-- Botão de buscar abaixo da caixa de entrada -->
             <button type="submit">Buscar</button>
         </form>
         
@@ -172,6 +191,31 @@
             {% if mapa_url %}
                 <p style="text-align: center;">Localização: <a href="{{ mapa_url }}" target="_blank">Ver no Google Maps</a></p>
             {% endif %}
+        {% endif %}
+
+        <!-- Tabela de Referências Vizinhas -->
+        {% if referencias %}
+            <h3 style="text-align: center;">Referências Vizinhas</h3>
+            <table class="references-table">
+                <thead>
+                    <tr>
+                        <th>MRU</th>
+                        <th>Instalação</th>
+                        <th>Medidor</th>
+                        <th>Endereço</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ref in referencias %}
+                        <tr class="{% if ref['medidor'] == resultado['medidor'] %}highlight{% endif %}">
+                            <td>{{ ref['MRU'] }}</td>
+                            <td>{{ ref['instalação'] }}</td>
+                            <td>{{ ref['medidor'] }}</td>
+                            <td>{{ ref['endereço'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         {% endif %}
         
         <!-- Exibição da Versão -->
