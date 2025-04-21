@@ -21,7 +21,6 @@
             color: #333;
         }
         
-        /* Container do login */
         .login-container {
             background-color: rgba(255, 255, 255, 0.9);
             padding: 30px;
@@ -40,14 +39,22 @@
             color: #333;
             margin-bottom: 20px;
         }
-        
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
         input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1em;
+            box-sizing: border-box;
+            display: block;
         }
         
         button {
@@ -59,12 +66,13 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 1em;
+            text-align: center;
         }
 
         button:hover {
             background-color: #0056b3;
         }
-        
+
         .alert {
             padding: 10px;
             margin: 10px auto;
@@ -85,7 +93,6 @@
             color: #555;
         }
 
-        /* Responsividade para telas menores */
         @media (max-width: 768px) {
             .login-container {
                 width: 80%;
@@ -100,22 +107,21 @@
 </head>
 <body>
     <div class="login-container">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo da Empresa" class="logo">
+        <img src="{{ url_for('static', filename='logo2.png') }}" alt="Logo da Empresa" class="logo">
         
         <h2>Acesso ao Sistema</h2>
         
-        <!-- Formulário de Login -->
         <form action="{{ url_for('login') }}" method="post">
-            <label for="username" hidden>Usuário</label>
-            <input type="text" id="username" name="username" required placeholder="Usuário" aria-label="Usuário">
-            
-            <label for="password" hidden>Senha</label>
-            <input type="password" id="password" name="password" required placeholder="Senha" aria-label="Senha">
-            
+            <div class="form-group">
+                <label for="username" hidden>Usuário</label>
+                <input type="text" id="username" name="username" required placeholder="Usuário" aria-label="Usuário">
+                
+                <label for="password" hidden>Senha</label>
+                <input type="password" id="password" name="password" required placeholder="Senha" aria-label="Senha">
+            </div>
             <button type="submit">Entrar</button>
         </form>
 
-        <!-- Exibição de Mensagens Flash -->
         {% with messages = get_flashed_messages(with_categories=True) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -124,8 +130,7 @@
             {% endif %}
         {% endwith %}
 
-        <!-- Exibição do Número da Versão -->
-        <p class="footer-text">Versão do Aplicativo: 1.0.3</p>
+        <p class="footer-text">Versão do Aplicativo: 1.0.4</p>
     </div>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscar Endereço</title>
+    <title>LocaMap</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -21,7 +21,7 @@
             padding: 20px;
             border-radius: 10px;
             display: inline-block;
-            margin-top: 50px;
+            margin-top: 40px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             text-align: left;
         }
@@ -111,7 +111,7 @@
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            padding: 10px;
+            padding: 4px;
             background-color: rgba(255, 255, 255, 0.8);
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             position: fixed;
@@ -127,10 +127,16 @@
         .logout-button {
             background-color: #007bff;
             color: white;
-            padding: 8px 32px;
+            padding: 8px 22px;  /* Ajuste o padding para garantir espaço suficiente */
             border: none;
             border-radius: 5px;
-            cursor: pointer;            
+            cursor: pointer;
+            font-size: 16px;  /* Tamanho de fonte para garantir boa legibilidade */
+            display: inline-flex;
+            align-items: center;  /* Alinha o texto verticalmente */
+            justify-content: center;  /* Alinha o texto horizontalmente */
+            height: 40px;  /* Defina uma altura fixa para o botão */
+            width: auto;  /* Deixe a largura ajustar ao conteúdo */
         }
         .logout-button:hover {
             background-color: #0056b3;
@@ -149,7 +155,7 @@
     {% endif %}
 
     <div class="container" style="margin-top: 80px;">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo da Empresa" class="logo">
+        <img src="{{ url_for('static', filename='logo2.png') }}" alt="Logo da Empresa" class="logo">
         
         <h2>Digite a instalação ou o número do medidor:</h2>
         <form action="{{ url_for('buscar') }}" method="post">
